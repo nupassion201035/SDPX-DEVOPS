@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-webgame
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-webgame
+  template:
+    metadata:
+      labels:
+        app: my-webgame
+    spec:
+      containers:
+        - name: my-webgame-server
+          image: registry.gitlab.com/mgeternal/first_devops
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-webgame-service
+  labels:
+    app: my-webgame-service
+spec:
+  selector:
+    app: my-webgame
+  ports:
+    - name: hello-part
+      protocol: TCP
+      port: 8083
+      targetPort: 80
+  type: ClusterIP
