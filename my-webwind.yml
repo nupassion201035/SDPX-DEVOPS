@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-webwind
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-webwind
+  template:
+    metadata:
+      labels:
+        app: my-webwind
+    spec:
+      containers:
+        - name: my-webwind-server
+          image: registry.gitlab.com/windx987/my-devops
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-webwind-service
+  labels:
+    app: my-webwind-service
+spec:
+  selector:
+    app: my-webwind
+  ports:
+    - name: hello-part
+      protocol: TCP
+      port: 8084
+      targetPort: 80
+  type: ClusterIP
