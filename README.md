@@ -20,3 +20,7 @@ graph TD;
     B-->D;
     C-->D;
 ```
+
+```
+docker run --name web-2 -p 8082:80 -d -v D:/Gitlab/sdpx-devops/html:
+```
