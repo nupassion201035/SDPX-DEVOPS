@@ -32,5 +32,12 @@ pipeline{
             }
         }
 
+        stage('Deploy'){
+            agent {label 'deploy-server'}
+            steps{
+                sh "kubectl apply -f my-web.yaml"
+            }
+        }
+
     }
 }
