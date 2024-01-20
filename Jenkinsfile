@@ -14,8 +14,8 @@ pipeline{
 
         stage('Delivery'){
             steps{
-                withcredentials(
-                    [usernamepassword(
+                withCredentials(
+                    [usernamePassword(
                         credentialsId: 'gitlab-user01', 
                         passwordVariable: 'GITLAB_PASSWORD', 
                         usernameVariable: 'GITLAB_USER'
