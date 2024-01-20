@@ -21,7 +21,7 @@ pipeline{
                         usernameVariable: 'GITLAB_USER'
                     )]
                 ){
-                    sh "docker login -u ${env.GITLAB_USER} -p ${env.GITLAB_PASSWORD} registry.gitlab.com"
+                    sh "docker login registry.gitlab.com -u ${GITLAB_USER} -p ${GITLAB_PASSWORD}"
                     sh "docker push registry.gitlab.com/nupassion201035/sdpx-devops"
                 }
             }
