@@ -23,8 +23,11 @@ pipeline{
                     )]
                 ){
                     sh "docker login registry.gitlab.com -u ${GITLAB_USER} -p ${GITLAB_PASSWORD}"
+                    sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${env.BUILD_NUMBER}"
                     sh "docker push ${IMAGE_NAME}"
+                    sh "docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}"
                     sh "docker rmi ${IMAGE_NAME}"
+                    sh "docker rmi ${IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
