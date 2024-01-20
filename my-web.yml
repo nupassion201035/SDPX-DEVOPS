@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-web
+  template:
+    metadata:
+      labels:
+        app: my-web
+    spec:
+      containers:
+        - name: my-web-server
+          image: registry.gitlab.com/nupassion201035/sdpx-devops
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-web-service
+  labels:
+    app: my-web-service
+spec:
+  selector:
+    app: my-web
+  ports:
+    - name: hello-part
+      protocol: TCP
+      port: 8082
+      targetPort: 80
+  type: ClusterIP

@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mydb
+  template:
+    metadata:
+      labels:
+        app: mydb
+    spec:
+      containers:
+        - name: mydb-server
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database-name
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mydb-service
+  labels:
+    app: mydb-service
+spec:
+  selector:
+    app: mydb
+  ports:
+    - name: mydb-port
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myadmin
+  template:
+    metadata:
+      labels:
+        app: myadmin
+    spec:
+      containers:
+        - name: myadmin-server
+          image: phpmyadmin
+          ports:
+            - containerPort: 80
+          env:
+            - name: PMA_HOST
+              value: mydb-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myadmin-service
+  labels:
+    app: myadmin-service
+spec:
+  selector:
+    app: myadmin
+  ports:
+    - name: myadmin-port
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
