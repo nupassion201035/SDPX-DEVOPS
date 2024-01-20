@@ -17,7 +17,7 @@ pipeline{
             steps{
                 withCredentials(
                     [usernamePassword(
-                        credentialsId: 'gitlab-user01', 
+                        credentialsId: 'gitlab-admin', 
                         passwordVariable: 'GITLAB_PASSWORD', 
                         usernameVariable: 'GITLAB_USER'
                     )]
