@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-web
+  name: user01-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-web
+      app: user01-web
   template:
     metadata:
       labels:
-        app: my-web
+        app: user01-web
     spec:
       containers:
-        - name: my-web-server
+        - name: user01-web-server
           image: registry.gitlab.com/nupassion201035/sdpx-devops
           ports:
             - containerPort: 80
@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-web-service
+  name: user01-web-service
   labels:
-    app: my-web-service
+    app: user01-web-service
 spec:
   selector:
-    app: my-web
+    app: user01-web
   ports:
     - name: hello-part
       protocol: TCP
