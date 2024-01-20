@@ -2,13 +2,14 @@ pipeline{
     agent {label 'build-server'}
     environment{
         APP_NAME = "test app name"
+        IMAGE_NAME = "registry.gitlab.com/nupassion201035/sdpx-devops"
     }
     stages{
         stage('Build Image'){
             steps{
                 sh "echo ${env.APP_NAME}"
                 sh "docker version"
-                sh "docker build -t registry.gitlab.com/nupassion201035/sdpx-devops ."
+                sh "docker build -t ${IMAGE_NAME} ."
             }
         }
 
@@ -22,9 +23,11 @@ pipeline{
                     )]
                 ){
                     sh "docker login registry.gitlab.com -u ${GITLAB_USER} -p ${GITLAB_PASSWORD}"
-                    sh "docker push registry.gitlab.com/nupassion201035/sdpx-devops"
+                    sh "docker push ${IMAGE_NAME}"
+                    sh "docker rmi ${IMAGE_NAME}"
                 }
             }
         }
+
     }
 }
