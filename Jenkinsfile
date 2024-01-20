@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent {label 'build-server'}
     environment{
         APP_NAME = "test app name"
     }
