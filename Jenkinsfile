@@ -35,6 +35,13 @@ pipeline{
         stage('Deploy'){
             agent {label 'deploy-server'}
             steps{
+                script{
+                    try{
+                        sh "kubectl delete -f my-web.yml"
+                    }catch(err){
+                        echo "echo skip delete service"
+                    }
+                }
                 sh "kubectl apply -f my-web.yml"
             }
         }

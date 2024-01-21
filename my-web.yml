@@ -15,6 +15,7 @@ spec:
       containers:
         - name: user01-web-server
           image: registry.gitlab.com/nupassion201035/sdpx-devops
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
